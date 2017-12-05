@@ -7,6 +7,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/test', function(req, res, next) {
+  res.render('testindex', { title: 'Express' });
+});
+
 router.get('/:text', function(req, res, next) {
 	// python calling
 	py    = spawn('python', ['compute_input.py']),

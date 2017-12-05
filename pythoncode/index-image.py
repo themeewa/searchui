@@ -1,6 +1,5 @@
-from imagefun.rgbhistogram import RGBHistogram
+from imagefunct.colordescriptor import ColorDescriptor
 import argparse
-import cPickle
 import glob
 import cv2
 
@@ -12,25 +11,25 @@ ap.add_argument("-i", "--index", required = True,
 	help = "Path to where the computed index will be stored")
 args = vars(ap.parse_args())
 
+# initialize the color descriptor
+cd = ColorDescriptor((8, 12, 3))
 
-index = {}
-
-# initialize our image descriptor --  3D RGB histogram with
-# 8 bins per channel
-desc = RGBHistogram([8, 8, 8])
+# open the output index file for writing
+output = open(args["index"], "w")
 
 # use glob to grab the image paths and loop over them
 for imagePath in glob.glob(args["dataset"] + "/*.png"):
-	# extract our unique image ID (i.e. the filename)
-	k = imagePath[imagePath.rfind("/") + 1:]
-
-	# load the image, RGB histogram descriptor
+	# extract the image ID (i.e. the unique filename) from the image
+	# path and load the image itself
+	imageID = imagePath[imagePath.rfind("/") + 1:]
 	image = cv2.imread(imagePath)
-	features = desc.describe(image)
-	index[k] = features
 
-f = open(args["index"], "w")
-f.write(cPickle.dumps(index))
-f.close()
+	# describe the image
+	features = cd.describe(image)
 
-print "done...indexed %d images" % (len(index))
+	# write the features to file
+	features = [str(f) for f in features]
+	output.write("%s,%s\n" % (imageID, ",".join(features)))
+
+# close the index file
+output.close()

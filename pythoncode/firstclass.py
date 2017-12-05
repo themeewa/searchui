@@ -35,12 +35,11 @@ training_corpus = [
 					('why sky is blue', 'Class_C')
 				]
 test_corpus = [
-                ("I am not feeling well today.", 'Class_B'), 
-                ("I feel brilliant!", 'Class_A'), 
-                ('Gary is a friend of mine.', 'Class_A'), 
-                ("I can't believe I'm doing this.", 'Class_B'), 
-                ('The date was good.', 'Class_A'), ('I do not enjoy my job', 'Class_B')]
-
-model = NBC(training_corpus) 
-print(model.classify("why she fell down"))
-print(model.classify("rainy season"))
+				("I am not feeling well today.", 'Class_B'), 
+				("I feel brilliant!", 'Class_A'), 
+				('Gary is a friend of mine.', 'Class_A'), 
+				("I can't believe I'm doing this.", 'Class_B'), 
+				('The date was good.', 'Class_A'), ('I do not enjoy my job', 'Class_B')]
+model = NBC(training_corpus)
+inquery = raw_input('querry:')
+print(model.classify(inquery))
